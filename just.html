@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamExpress - Premium Online Shopping</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover:after, nav ul li a.active:after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .search-container:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .search-container i {
+            margin-right: 5px;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* User Account */
+        .user-account {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .login-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            z-index: 1001;
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.open {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .close-mobile-nav {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 15px;
+        }
+
+        .mobile-nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .mobile-nav-links a.active {
+            color: #4e54c8;
+        }
+
+        /* Page Sections */
+        .page-section {
+            display: none;
+            padding: 80px 0;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1500&h=600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 18px 25px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-button {
+            background: #4e54c8;
+            color: white;
+            border: none;
+            padding: 0 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background: #8f94fb;
+        }
+
+        /* Promotional Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, #ff7b00 0%, #ff5e00 100%);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .promo-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .promo-content i {
+            font-size: 24px;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+            bottom: -15px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .view-all {
+            color: #4e54c8;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            padding: 25px 15px;
+            position: relative;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .category-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            background: #eef2ff;
+            border-radius: 50%;
+            font-size: 28px;
+            color: #4e54c8;
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .category-count {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Featured Products */
+        .products-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #4e54c8;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-content {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-description {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4e54c8;
+        }
+
+        .add-to-cart-btn {
+            background: #4e54c8;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #8f94fb;
+            transform: scale(1.1);
+        }
+
+        /* Shopping Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .cart-items {
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #4e54c8;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .item-quantity {
+            font-weight: 600;
+        }
+
+        .remove-item {
+            color: #ff4757;
+            background: none;
+            border: none;
+            margin-left: auto;
+            cursor: pointer;
+        }
+
+        .cart-summary {
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-total {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .checkout-button {
+            width: 100%;
+            background: #4e54c8;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-button:hover {
+            background: #8f94fb;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 0;
+            color: #7f8c8d;
+        }
+
+        .empty-cart i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Checkout Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            display: none;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .login-toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .login-toggle a {
+            color: #4e54c8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Order Confirmation */
+        .order-confirmation {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .confirmation-icon {
+            font-size: 60px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* About Page */
+        .about-section {
+            padding: 80px 0;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-text h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* Deals Page */
+        .deals-section {
+            padding: 80px 0;
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .deal-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .deal-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4757;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .deal-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .deal-content {
+            padding: 20px;
+        }
+
+        .deal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .deal-description {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .deal-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #7f8c8d;
+        }
+
+        .discount-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4e54c8;
+        }
+
+        .discount {
+            background: #ff4757;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: #4e54c8;
+            bottom: 0;
+            left: 0;
+        }
+
+        .app-download p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .app-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .app-button {
+            display: flex;
+            align-items: center;
+            background: #34495e;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .app-button:hover {
+            background: #4e54c8;
+            transform: translateY(-3px);
+        }
+
+        .app-button i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .app-button span {
+            font-size: 12px;
+            display: block;
+        }
+
+        .app-button strong {
+            font-size: 16px;
+            display: block;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #4e54c8;
+            padding-left: 5px;
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #4e54c8;
+            margin-top: 4px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #34495e;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: #4e54c8;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #34495e;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .cart-sidebar {
+                width: 350px;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                text-align: center;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .header-actions {
+                margin-top: 0;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .app-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-section h3:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .contact-info li {
+                justify-content: center;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 24px;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+                border-radius: 16px;
+            }
+            
+            .search-input {
+                border-radius: 16px 16px 0 0;
+            }
+            
+            .search-button {
+                border-radius: 0 0 16px 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .products-grid, .deals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-button {
+                min-width: 100%;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function EcommerceApp() {
+            const [cartItems, setCartItems] = useState([]);
+            const [showCart, setShowCart] = useState(false);
+            const [showMobileNav, setShowMobileNav] = useState(false);
+            const [showLoginModal, setShowLoginModal] = useState(false);
+            const [isLoggedIn, setIsLoggedIn] = useState(false);
+            const [user, setUser] = useState(null);
+            const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
+            const [currentView, setCurrentView] = useState('home');
+            const [selectedCategory, setSelectedCategory] = useState(null);
+            const [activeNav, setActiveNav] = useState('home');
+
+            // Sample data
+            const categories = [
+                { id: 1, name: "Electronics", icon: "fas fa-laptop", count: 156 },
+                { id: 2, name: "Fashion", icon: "fas fa-tshirt", count: 98 },
+                { id: 3, name: "Home & Kitchen", icon: "fas fa-home", count: 74 },
+                { id: 4, name: "Beauty", icon: "fas fa-spa", count: 112 },
+                { id: 5, name: "Sports", icon: "fas fa-running", count: 87 },
+                { id: 6, name: "Books", icon: "fas fa-book", count: 63 },
+                { id: 7, name: "Toys", icon: "fas fa-gamepad", count: 92 },
+                { id: 8, name: "Health", icon: "fas fa-heartbeat", count: 105 }
+            ];
+
+            const allProducts = [
+                // Electronics
+                { id: 1, categoryId: 1, name: "Wireless Headphones", description: "Premium noise-cancelling headphones with 30-hour battery life", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&h=250&q=80", price: 129.99, badge: "Best Seller" },
+                { id: 2, categoryId: 1, name: "Smart Watch", description: "Track your fitness and receive notifications on your wrist", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&h=250&q=80", price: 199.99 },
+                { id: 3, categoryId: 1, name: "Broadened Speaker", description: "Portable speaker with crystal clear sound", image: "speaker.png", price: 79.99 },
+                
+                // Fashion
+                { id: 4, categoryId: 2, name: "Casual Sneakers", description: "Comfortable everyday sneakers in various colors", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&h=250&q=80", price: 59.99, badge: "New" },
+                { id: 5, categoryId: 2, name: "Designer Handbag", description: "Elegant leather handbag with multiple compartments", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&h=250&q=80", price: 149.99 },
+                { id: 6, categoryId: 2, name: "Sunglasses", description: "UV protection sunglasses with polarized lenses", image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=400&h=250&q=80", price: 89.99 },
+                
+                // Home & Kitchen
+                { id: 7, categoryId: 3, name: "Coffee Maker", description: "Programmable coffee maker with thermal carafe", image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=400&h=250&q=80", price: 89.99 },
+                { id: 8, categoryId: 3, name: "Air Fryer", description: "Healthy cooking with little to no oil", image: "air fryer.png", price: 119.99 },
+                { id: 9, categoryId: 3, name: "Robot Vacuum", description: "Smart vacuum that cleans automatically", image: "robot vaccum cleaner.jpg", price: 249.99 },
+                
+                // Additional products for other categories
+                { id: 10, categoryId: 4, name: "Skincare Set", description: "Complete skincare routine for glowing skin", image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&h=250&q=80", price: 69.99 },
+                { id: 11, categoryId: 4, name: "Perfume", description: "Luxury fragrance with long-lasting scent", image: "perfume.jpg", price: 89.99 },
+                { id: 12, categoryId: 5, name: "Yoga Mat", description: "Eco-friendly yoga mat with non-slip surface", image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400&h=250&q=80", price: 39.99 },
+                { id: 13, categoryId: 5, name: "Dumbbell Set", description: "Adjustable dumbbells for home workouts", image: "dumbelset.jpg", price: 129.99 },
+                { id: 14, categoryId: 6, name: "Bestselling Novel", description: "Award-winning fiction novel", image: "novelbook.jpg", price: 14.99 },
+                { id: 15, categoryId: 6, name: "Cookbook", description: "Collection of recipes from around the world", image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=400&h=250&q=80", price: 24.99 },
+                { id: 16, categoryId: 7, name: "Building Blocks", description: "Educational toy for creative minds", image: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=400&h=250&q=80", price: 49.99 },
+                { id: 17, categoryId: 7, name: "Board Game", description: "Family strategy game for all ages", image: "boardgames.jpg", price: 34.99 },
+                { id: 18, categoryId: 8, name: "Vitamin C Supplements", description: "Boost your immune system naturally", image: "vitamin c.jpg", price: 19.99 },
+                { id: 19, categoryId: 8, name: "Protein Powder", description: "Plant-based protein for muscle recovery", image: "protein powder.jpg", price: 29.99 }
+            ];
+
+            const featuredProducts = allProducts.filter(product => product.id <= 6);
+            
+            // Deals products
+            const dealsProducts = [
+                { id: 101, name: "Smartphone X", description: "Latest smartphone with amazing camera", image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=400&h=250&q=80", originalPrice: 999.99, price: 799.99, discount: "20% OFF" },
+                { id: 102, name: "Wireless Earbuds", description: "Premium sound quality with noise cancellation", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&h=250&q=80", originalPrice: 199.99, price: 149.99, discount: "25% OFF" },
+                { id: 103, name: "Fitness Tracker", description: "Track your steps, heart rate, and sleep", image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?auto=format&fit=crop&w=400&h=250&q=80", originalPrice: 129.99, price: 89.99, discount: "30% OFF" }
+            ];
+            
+            // Toggle functions
+            const toggleCart = () => {
+                setShowCart(!showCart);
+            };
+
+            const toggleMobileNav = () => {
+                setShowMobileNav(!showMobileNav);
+            };
+
+            const toggleLoginModal = () => {
+                setShowLoginModal(!showLoginModal);
+            };
+
+            // Navigation function
+            const navigateTo = (view) => {
+                setCurrentView(view);
+                setActiveNav(view);
+                setShowMobileNav(false);
+                window.scrollTo(0, 0);
+            };
+
+            // Cart functions
+            const addToCart = (product) => {
+                const existingItem = cartItems.find(item => item.id === product.id);
+                
+                if (existingItem) {
+                    setCartItems(cartItems.map(item => 
+                        item.id === product.id 
+                            ? { ...item, quantity: item.quantity + 1 } 
+                            : item
+                    ));
+                } else {
+                    setCartItems([...cartItems, { ...product, quantity: 1 }]);
+                }
+            };
+
+            const removeFromCart = (id) => {
+                setCartItems(cartItems.filter(item => item.id !== id));
+            };
+
+            const updateQuantity = (id, change) => {
+                setCartItems(cartItems.map(item => {
+                    if (item.id === id) {
+                        const newQuantity = item.quantity + change;
+                        if (newQuantity < 1) return item;
+                        return { ...item, quantity: newQuantity };
+                    }
+                    return item;
+                }));
+            };
+
+            const getCartTotal = () => {
+                return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+            };
+
+            const getCartItemsCount = () => {
+                return cartItems.reduce((total, item) => total + item.quantity, 0);
+            };
+
+            // Order functions
+            const placeOrder = () => {
+                if (cartItems.length === 0) return;
+                
+                if (!isLoggedIn) {
+                    setShowLoginModal(true);
+                    setShowCart(false);
+                    return;
+                }
+                
+                // In a real app, you would send the order to a backend here
+                setShowOrderConfirmation(true);
+                setShowCart(false);
+                setCartItems([]);
+                
+                // Hide confirmation after 5 seconds
+                setTimeout(() => {
+                    setShowOrderConfirmation(false);
+                }, 5000);
+            };
+
+            // Authentication functions
+            const handleLogin = (e) => {
+                e.preventDefault();
+                // In a real app, you would validate credentials against a backend
+                setIsLoggedIn(true);
+                setUser({ name: "John Doe", email: "john@example.com" });
+                setShowLoginModal(false);
+            };
+
+            const handleLogout = () => {
+                setIsLoggedIn(false);
+                setUser(null);
+                setShowMobileNav(false);
+            };
+
+            // Filter products by category
+            const getProductsByCategory = (categoryId) => {
+                return allProducts.filter(product => product.categoryId === categoryId);
+            };
+
+            // Render functions for different sections
+            const renderHeader = () => (
+                <header>
+                    <div className="container header-content">
+                        <div className="logo" onClick={() => navigateTo('home')}>
+                            <i className="fas fa-shopping-bag"></i>
+                            <span>DreamExpress</span>
+                        </div>
+                        
+                        <nav>
+                            <ul>
+                                <li><a className={activeNav === 'home' ? 'active' : ''} onClick={() => navigateTo('home')}>Home</a></li>
+                                <li><a className={activeNav === 'categories' ? 'active' : ''} onClick={() => navigateTo('categories')}>Categories</a></li>
+                                <li><a className={activeNav === 'deals' ? 'active' : ''} onClick={() => navigateTo('deals')}>Deals</a></li>
+                                <li><a className={activeNav === 'about' ? 'active' : ''} onClick={() => navigateTo('about')}>About</a></li>
+                            </ul>
+                        </nav>
+                        
+                        <div className="header-actions">
+                            <div className="search-container">
+                                <i className="fas fa-search"></i>
+                                <span>Search products...</span>
+                            </div>
+                            
+                            <div className="cart-icon" onClick={toggleCart}>
+                                <i className="fas fa-shopping-cart"></i>
+                                {getCartItemsCount() > 0 && (
+                                    <span className="cart-count">{getCartItemsCount()}</span>
+                                )}
+                            </div>
+                            
+                            {isLoggedIn ? (
+                                <div className="user-account">
+                                    <div className="user-avatar">
+                                        <i className="fas fa-user"></i>
+                                    </div>
+                                    <span>Hi, {user.name.split(' ')[0]}</span>
+                                </div>
+                            ) : (
+                                <button className="login-btn" onClick={toggleLoginModal}>Login</button>
+                            )}
+                            
+                            <button className="mobile-menu-btn" onClick={toggleMobileNav}>
+                                <i className="fas fa-bars"></i>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            );
+
+            const renderHeroSection = () => (
+                <section className="hero-section">
+                    <div className="container hero-content">
+                        <h1 className="hero-title animated">Discover Amazing Products</h1>
+                        <p className="hero-subtitle animated delay-1">From electronics to fashion, find everything you need at great prices</p>
+                        
+                        <div className="search-bar animated delay-2">
+                            <input type="text" className="search-input" placeholder="What are you looking for?" />
+                            <button className="search-button">Search</button>
+                        </div>
+                    </div>
+                </section>
+            );
+
+            const renderPromoBanner = () => (
+                <div className="promo-banner">
+                    <div className="container promo-content">
+                        <i className="fas fa-tag"></i>
+                        <p>Summer Sale: Up to 50% off on selected items! Limited time offer.</p>
+                    </div>
+                </div>
+            );
+
+            const renderCategories = () => (
+                <section className="categories-section">
+                    <div className="container">
+                        <div className="section-header">
+                            <h2 className="section-title">Shop by Category</h2>
+                            <a className="view-all">View all <i className="fas fa-chevron-right"></i></a>
+                        </div>
+                        
+                        <div className="categories-grid">
+                            {categories.map(category => (
+                                <div key={category.id} className="category-card" onClick={() => {
+                                    setSelectedCategory(category.id);
+                                    setCurrentView('category-products');
+                                }}>
+                                    <div className="category-icon">
+                                        <i className={category.icon}></i>
+                                    </div>
+                                    <h3 className="category-name">{category.name}</h3>
+                                    <p className="category-count">{category.count} items</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+
+            const renderFeaturedProducts = () => (
+                <section className="products-section">
+                    <div className="container">
+                        <div className="section-header">
+                            <h2 className="section-title">Featured Products</h2>
+                            <a className="view-all">View all <i className="fas fa-chevron-right"></i></a>
+                        </div>
+                        
+                        <div className="products-grid">
+                            {featuredProducts.map(product => (
+                                <div key={product.id} className="product-card">
+                                    {product.badge && <span className="product-badge">{product.badge}</span>}
+                                    <img src={product.image} alt={product.name} className="product-image" />
+                                    <div className="product-content">
+                                        <h3 className="product-name">{product.name}</h3>
+                                        <p className="product-description">{product.description}</p>
+                                        <div className="product-footer">
+                                            <span className="product-price">${product.price.toFixed(2)}</span>
+                                            <button className="add-to-cart-btn" onClick={() => addToCart(product)}>
+                                                <i className="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+
+            const renderCategoryProducts = () => {
+                const categoryProducts = selectedCategory ? getProductsByCategory(selectedCategory) : [];
+                const category = categories.find(c => c.id === selectedCategory);
+                
+                return (
+                    <section className="products-section">
+                        <div className="container">
+                            <div className="section-header">
+                                <h2 className="section-title">{category?.name} Products</h2>
+                                <button onClick={() => navigateTo('categories')} className="view-all">
+                                    <i className="fas fa-arrow-left"></i> Back to categories
+                                </button>
+                            </div>
+                            
+                            <div className="products-grid">
+                                {categoryProducts.map(product => (
+                                    <div key={product.id} className="product-card">
+                                        {product.badge && <span className="product-badge">{product.badge}</span>}
+                                        <img src={product.image} alt={product.name} className="product-image" />
+                                        <div className="product-content">
+                                            <h3 className="product-name">{product.name}</h3>
+                                            <p className="product-description">{product.description}</p>
+                                            <div className="product-footer">
+                                                <span className="product-price">${product.price.toFixed(2)}</span>
+                                                <button className="add-to-cart-btn" onClick={() => addToCart(product)}>
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                );
+            };
+
+            const renderAboutPage = () => (
+                <section className="about-section">
+                    <div className="container">
+                        <div className="section-header">
+                            <h2 className="section-title">About DreamExpress</h2>
+                        </div>
+                        
+                        <div className="about-content">
+                            <div className="about-image">
+                                <img src="dream.jpeg" alt="About DreamExpress" />
+                            </div>
+                            <div className="about-text">
+                                <h2>Your Trusted Shopping Destination</h2>
+                                <p>DreamExpress is a premier online shopping platform that brings you the best products from around the world. We are committed to providing our customers with a seamless shopping experience, offering a wide range of products at competitive prices.</p>
+                                <p>Our mission is to make online shopping accessible, enjoyable, and secure for everyone. With a focus on quality, customer service, and innovation, we strive to be your go-to destination for all your shopping needs.</p>
+                                <p>Whether you're looking for electronics, fashion, home goods, or specialty items, DreamExpress has you covered. Our dedicated team works tirelessly to curate the best products and ensure your complete satisfaction.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+
+            const renderDealsPage = () => (
+                <section className="deals-section">
+                    <div className="container">
+                        <div className="section-header">
+                            <h2 className="section-title">Hot Deals</h2>
+                            <p>Don't miss out on these limited-time offers!</p>
+                        </div>
+                        
+                        <div className="deals-grid">
+                            {dealsProducts.map(product => (
+                                <div key={product.id} className="deal-card">
+                                    <span className="deal-badge">{product.discount}</span>
+                                    <img src={product.image} alt={product.name} className="deal-image" />
+                                    <div className="deal-content">
+                                        <h3 className="deal-title">{product.name}</h3>
+                                        <p className="deal-description">{product.description}</p>
+                                        <div className="deal-price">
+                                            <span className="original-price">${product.originalPrice.toFixed(2)}</span>
+                                            <span className="discount-price">${product.price.toFixed(2)}</span>
+                                        </div>
+                                        <button className="checkout-button" onClick={() => addToCart(product)}>
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+
+            const renderFooter = () => (
+                <footer>
+                    <div className="container">
+                        <div className="footer-content">
+                            <div className="footer-section app-download">
+                                <h3>Get the DreamExpress App</h3>
+                                <p>Download our app for faster shopping and exclusive deals</p>
+                                <div className="app-buttons">
+                                    <a className="app-button">
+                                        <i className="fab fa-apple"></i>
+                                        <div>
+                                            <span>Download on the</span>
+                                            <strong>App Store</strong>
+                                        </div>
+                                    </a>
+                                    <a className="app-button">
+                                        <i className="fab fa-google-play"></i>
+                                        <div>
+                                            <span>Get it on</span>
+                                            <strong>Google Play</strong>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div className="footer-section">
+                                <h3>Quick Links</h3>
+                                <ul className="footer-links">
+                                    <li><a onClick={() => navigateTo('home')}>Home</a></li>
+                                    <li><a onClick={() => navigateTo('categories')}>Categories</a></li>
+                                    <li><a onClick={() => navigateTo('deals')}>Deals & Offers</a></li>
+                                    <li><a onClick={() => navigateTo('about')}>About Us</a></li>
+                                    <li><a>Track Order</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div className="footer-section">
+                                <h3>Customer Service</h3>
+                                <ul className="footer-links">
+                                    <li><a>FAQ</a></li>
+                                    <li><a>Terms of Service</a></li>
+                                    <li><a>Privacy Policy</a></li>
+                                    <li><a>Contact Support</a></li>
+                                    <li><a>Returns & Refunds</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div className="footer-section">
+                                <h3>Contact Us</h3>
+                                <ul className="contact-info">
+                                    <li>
+                                        <i className="fas fa-map-marker-alt"></i>
+                                        <span>3648 Amazon Berg Street, Japan, Tokyo</span>
+                                    </li>
+                                    <li>
+                                        <i className="fas fa-phone"></i>
+                                        <span>+81 7648246570</span>
+                                    </li>
+                                    <li>
+                                        <i className="fas fa-envelope"></i>
+                                        <span>support@dreamexpress.com</span>
+                                    </li>
+                                </ul>
+                                <div className="social-icons">
+                                    <a href="#"><i className="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i className="fab fa-twitter"></i></a>
+                                    <a href="#"><i className="fab fa-instagram"></i></a>
+                                    <a href="#"><i className="fab fa-pinterest"></i></a>
+                                    <a href="#"><i className="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="footer-bottom">
+                            <p>© 2025 DreamExpress. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            );
+
+            const renderCartSidebar = () => (
+                <div className={`cart-sidebar ${showCart ? 'open' : ''}`}>
+                    <div className="cart-header">
+                        <h2 className="cart-title">Your Cart</h2>
+                        <button className="close-cart" onClick={toggleCart}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div className="cart-items">
+                        {cartItems.length === 0 ? (
+                            <div className="empty-cart">
+                                <i className="fas fa-shopping-cart"></i>
+                                <p>Your cart is empty</p>
+                            </div>
+                        ) : (
+                            cartItems.map(item => (
+                                <div key={item.id} className="cart-item">
+                                    <img src={item.image} alt={item.name} className="cart-item-image" />
+                                    <div className="cart-item-details">
+                                        <h3 className="cart-item-name">{item.name}</h3>
+                                        <p className="cart-item-price">${item.price.toFixed(2)}</p>
+                                        <div className="cart-item-actions">
+                                            <button className="quantity-btn" onClick={() => updateQuantity(item.id, -1)}>
+                                                <i className="fas fa-minus"></i>
+                                            </button>
+                                            <span className="item-quantity">{item.quantity}</span>
+                                            <button className="quantity-btn" onClick={() => updateQuantity(item.id, 1)}>
+                                                <i className="fas fa-plus"></i>
+                                            </button>
+                                            <button className="remove-item" onClick={() => removeFromCart(item.id)}>
+                                                <i className="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                    
+                    {cartItems.length > 0 && (
+                        <div className="cart-summary">
+                            <div className="summary-row">
+                                <span>Subtotal</span>
+                                <span>${getCartTotal().toFixed(2)}</span>
+                            </div>
+                            <div className="summary-row">
+                                <span>Shipping</span>
+                                <span>$5.99</span>
+                            </div>
+                            <div className="summary-row">
+                                <span>Tax</span>
+                                <span>${(getCartTotal() * 0.08).toFixed(2)}</span>
+                            </div>
+                            <div className="summary-row summary-total">
+                                <span>Total</span>
+                                <span>${(getCartTotal() + 5.99 + (getCartTotal() * 0.08)).toFixed(2)}</span>
+                            </div>
+                            
+                            <button className="checkout-button" onClick={placeOrder}>
+                                Proceed to Checkout
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+
+            const renderMobileNav = () => (
+                <div className={`mobile-nav ${showMobileNav ? 'open' : ''}`}>
+                    <div className="mobile-nav-header">
+                        <div className="logo" onClick={() => navigateTo('home')}>
+                            <i className="fas fa-shopping-bag"></i>
+                            <span>DreamExpress</span>
+                        </div>
+                        <button className="close-mobile-nav" onClick={toggleMobileNav}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <ul className="mobile-nav-links">
+                        <li><a className={activeNav === 'home' ? 'active' : ''} onClick={() => navigateTo('home')}>Home</a></li>
+                        <li><a className={activeNav === 'categories' ? 'active' : ''} onClick={() => navigateTo('categories')}>Categories</a></li>
+                        <li><a className={activeNav === 'deals' ? 'active' : ''} onClick={() => navigateTo('deals')}>Deals</a></li>
+                        <li><a className={activeNav === 'about' ? 'active' : ''} onClick={() => navigateTo('about')}>About</a></li>
+                        <li>
+                            {isLoggedIn ? (
+                                <a onClick={handleLogout}>Logout</a>
+                            ) : (
+                                <a onClick={toggleLoginModal}>Login</a>
+                            )}
+                        </li>
+                    </ul>
+                </div>
+            );
+
+            const renderLoginModal = () => (
+                <div className={`modal ${showLoginModal ? 'open' : ''}`}>
+                    <div className="modal-content">
+                        <button className="close-modal" onClick={toggleLoginModal}>
+                            <i className="fas fa-times"></i>
+                        </button>
+                        
+                        <h2 className="modal-title">Login to Your Account</h2>
+                        
+                        <form onSubmit={handleLogin}>
+                            <div className="form-group">
+                                <label htmlFor="email">Email Address</label>
+                                <input type="email" id="email" placeholder="Enter your email" required />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <input type="password" id="password" placeholder="Enter your password" required />
+                            </div>
+                            
+                            <button type="submit" className="checkout-button">Login</button>
+                        </form>
+                        
+                        <div className="login-toggle">
+                            <p>Don't have an account? <a href="#signup">Sign up</a></p>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderOrderConfirmation = () => (
+                <div className={`modal ${showOrderConfirmation ? 'open' : ''}`}>
+                    <div className="modal-content">
+                        <div className="order-confirmation">
+                            <div className="confirmation-icon">
+                                <i className="fas fa-check-circle"></i>
+                            </div>
+                            <h2 className="modal-title">Order Confirmed!</h2>
+                            <p className="confirmation-message">Your order has been placed successfully. You will receive a confirmation email shortly.</p>
+                            <button className="checkout-button" onClick={() => setShowOrderConfirmation(false)}>
+                                Continue Shopping
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderOverlay = () => (
+                <div className={`overlay ${showCart || showMobileNav || showLoginModal || showOrderConfirmation ? 'show' : ''}`} 
+                     onClick={() => {
+                         if (showCart) setShowCart(false);
+                         if (showMobileNav) setShowMobileNav(false);
+                         if (showLoginModal) setShowLoginModal(false);
+                         if (showOrderConfirmation) setShowOrderConfirmation(false);
+                     }}></div>
+            );
+
+            const renderCurrentView = () => {
+                switch (currentView) {
+                    case 'home':
+                        return (
+                            <>
+                                {renderHeroSection()}
+                                {renderPromoBanner()}
+                                {renderCategories()}
+                                {renderFeaturedProducts()}
+                            </>
+                        );
+                    case 'categories':
+                        return renderCategories();
+                    case 'deals':
+                        return renderDealsPage();
+                    case 'about':
+                        return renderAboutPage();
+                    case 'category-products':
+                        return renderCategoryProducts();
+                    default:
+                        return (
+                            <>
+                                {renderHeroSection()}
+                                {renderPromoBanner()}
+                                {renderCategories()}
+                                {renderFeaturedProducts()}
+                            </>
+                        );
+                }
+            };
+
+            return (
+                <div className="app">
+                    {renderHeader()}
+                    <main>
+                        {renderCurrentView()}
+                    </main>
+                    
+                    {renderFooter()}
+                    
+                    {renderCartSidebar()}
+                    {renderMobileNav()}
+                    {renderLoginModal()}
+                    {renderOrderConfirmation()}
+                    {renderOverlay()}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<EcommerceApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
